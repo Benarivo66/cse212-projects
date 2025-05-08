@@ -17,7 +17,13 @@ public static class Divisors {
     /// <param name="number">The number to find the divisor</param>
     /// <returns>List of divisors</returns>
     private static List<int> FindDivisors(int number) {
+        int mid = (int)Math.Floor(number / 2.0);
         List<int> results = new();
+        for(var index = 1; index <= mid; index++) {
+            if(number % index == 0) {
+                results.Add(index);
+            }
+        }
         // TODO problem 1
         return results;
     }
