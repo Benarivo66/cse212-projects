@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -22,7 +23,20 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var unique = new HashSet<string>();
+        var list = new List<string>();
+        foreach (var word in words)
+        {
+            if (word.Length != 2 || word[0] == word[1])
+                continue;
+            var reversedWord = new string(new[] { word[1], word[0] });
+            if (unique.Contains(reversedWord))
+            {
+                list.Add($"{reversedWord} & {word}");
+            }
+            unique.Add(word);
+        }
+        return list.ToArray();
     }
 
     /// <summary>
@@ -43,6 +57,14 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            if (degrees.ContainsKey(fields[3]))
+            {
+                degrees[fields[3]] += 1;
+            }
+            else
+            {
+                degrees[fields[3]] = 1;
+            }
         }
 
         return degrees;
@@ -67,7 +89,36 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var dict = new Dictionary<char, int>();
+        var dict2 = new Dictionary<char, int>();
+        var lowerCleanWord1 = word1.Replace(" ", "").ToLower();
+        var lowerCleanWord2 = word2.Replace(" ", "").ToLower();
+        if (lowerCleanWord1.Length != lowerCleanWord2.Length) return false;
+        for (int i = 0; i < lowerCleanWord1.Length; ++i)
+        {
+            if (dict.ContainsKey(lowerCleanWord1[i]))
+            {
+                dict[lowerCleanWord1[i]] += 1;
+            }
+            else
+            {
+                dict[lowerCleanWord1[i]] = 1;
+            }
+            if (dict2.ContainsKey(lowerCleanWord2[i]))
+            {
+                dict2[lowerCleanWord2[i]] += 1;
+            }
+            else
+            {
+                dict2[lowerCleanWord2[i]] = 1;
+            }
+        }
+        foreach (var key in dict.Keys)
+        {
+            if (!dict2.ContainsKey(key)) return false;
+            if (dict[key] != dict2[key]) return false;
+        }
+        return true;
     }
 
     /// <summary>

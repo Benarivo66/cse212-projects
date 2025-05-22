@@ -23,13 +23,30 @@ public class Basketball
         reader.TextFieldType = FieldType.Delimited;
         reader.SetDelimiters(",");
         reader.ReadFields(); // ignore header row
-        while (!reader.EndOfData) {
+        while (!reader.EndOfData)
+        {
             var fields = reader.ReadFields()!;
             var playerId = fields[0];
             var points = int.Parse(fields[8]);
+            if (players.ContainsKey(playerId))
+            {
+                players[playerId] += points;
+            }
+            else
+            {
+                players[playerId] = points;
+            }
         }
+        var sortedArray = players
+            .OrderByDescending(pair => pair.Value)
+            .ToArray();
 
-        Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
+        // Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
+        for(var k = 0; k < 10; ++k)
+        {
+            var player = sortedArray[k];
+            Console.WriteLine($"{k + 1}. {player.Key} - {player.Value} points");
+        }
 
         var topPlayers = new string[10];
     }
